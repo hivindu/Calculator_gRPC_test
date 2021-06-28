@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+// Proto buffer 
+option csharp_namespace = "CalculatorService";
+
+service Calculator{
+	rpc Addition(stream RequestModel) returns (AdditionResponseModel);
+	rpc MultiplicationTable(RequestModel) returns (stream MultiplicationResponseModel);
+}
+
+message RequestModel{
+	int32 value = 1;
+}
+
+message AdditionResponseModel{
+	int32 total = 1;
+}
+
+message MultiplicationResponseModel{
+	int32 multipliedValue = 1;
+	int32 multipliedBy = 2;
+	int32 result = 3;
+}
