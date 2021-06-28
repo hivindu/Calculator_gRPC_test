@@ -8,7 +8,7 @@ namespace CalculatorService.Services
     public class CalculationService : Calculator.CalculatorBase
     {
         private readonly ILogger<CalculationService> _logger;
-        
+
         public CalculationService(ILogger<CalculationService> logger)
         {
             _logger = logger;
@@ -36,14 +36,15 @@ namespace CalculatorService.Services
             {
                 _result = i * request.Value;
 
-                await responseStream.WriteAsync( new MultiplicationResponseModel { 
-                
+                await responseStream.WriteAsync(new MultiplicationResponseModel
+                {
+
                     MultipliedValue = i,
                     MultipliedBy = request.Value,
                     Result = _result
                 });
 
-               await Task.Delay(TimeSpan.FromSeconds(1));
+                await Task.Delay(TimeSpan.FromSeconds(1));
 
             }
         }

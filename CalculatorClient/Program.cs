@@ -26,8 +26,9 @@ namespace CalculatorClient
         {
             Console.Write("Enter Your Name:");
             string _name = Convert.ToString(Console.ReadLine());
-            var response = await greeterClient.SayHelloAsync(new HelloRequest { 
-            Name = _name
+            var response = await greeterClient.SayHelloAsync(new HelloRequest
+            {
+                Name = _name
             });
 
             Console.WriteLine(response.Message);
@@ -42,14 +43,14 @@ namespace CalculatorClient
 
             for (int i = 1; i < 4; i++)
             {
-                var _randomNumber = random.Next(1,100);
-                await call.RequestStream.WriteAsync(new RequestModel { Value = _randomNumber});
+                var _randomNumber = random.Next(1, 100);
+                await call.RequestStream.WriteAsync(new RequestModel { Value = _randomNumber });
             }
 
             await call.RequestStream.CompleteAsync();
 
             var response = await call;
-            Console.WriteLine("Total is "+response.Total);
+            Console.WriteLine("Total is " + response.Total);
         }
 
         private static async Task ServerStreamCall(Calculator.CalculatorClient calculatorClient)
@@ -58,12 +59,12 @@ namespace CalculatorClient
 
             Console.WriteLine("Let's get Multiplication Table for random Number");
             var _randomNumber = random.Next(10);
-            Console.WriteLine("Random Number is "+_randomNumber);
-            var call = calculatorClient.MultiplicationTable(new RequestModel { Value = _randomNumber});
+            Console.WriteLine("Random Number is " + _randomNumber);
+            var call = calculatorClient.MultiplicationTable(new RequestModel { Value = _randomNumber });
 
             await foreach (var item in call.ResponseStream.ReadAllAsync())
             {
-                Console.WriteLine(item.MultipliedBy+" X "+item.MultipliedValue+" = "+item.Result);
+                Console.WriteLine(item.MultipliedBy + " X " + item.MultipliedValue + " = " + item.Result);
             }
         }
     }
