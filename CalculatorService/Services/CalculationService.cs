@@ -17,35 +17,32 @@ namespace CalculatorService.Services
         public override async Task<AdditionResponseModel> Addition(IAsyncStreamReader<RequestModel> requestStream, ServerCallContext context)
         {
             // CHeck for async and await
-            int _total = 0;
-            AdditionResponseModel response = new AdditionResponseModel();
+            int total = 0;
+            AdditionResponseModel response = new();
             await foreach (var number in requestStream.ReadAllAsync())
             {
-                _total += number.Value;
+                total += number.Value;
             }
 
-            response.Total = _total;
-            _logger.LogInformation($"Total is { _total }");
+            response.Total = total;
+            _logger.LogInformation($"Total is { total }");
 
             return response;
         }
         public override async Task MultiplicationTable(RequestModel request, IServerStreamWriter<MultiplicationResponseModel> responseStream, ServerCallContext context)
         {
-            int _result = 0;
             for (int i = 1; i < 11; i++)
             {
-                _result = i * request.Value;
+                int result = i * request.Value;
 
                 await responseStream.WriteAsync(new MultiplicationResponseModel
                 {
-
                     MultipliedValue = i,
                     MultipliedBy = request.Value,
-                    Result = _result
-                });
+                    Result = result
+                }).ConfigureAwait(false);
 
-                await Task.Delay(TimeSpan.FromSeconds(1));
-
+                await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
             }
         }
     }
